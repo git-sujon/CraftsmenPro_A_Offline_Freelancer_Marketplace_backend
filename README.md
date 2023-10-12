@@ -52,3 +52,60 @@ Welcome to CraftsmenPro, a robust online platform designed for seamless booking 
 
 - 📚 **Best Coding Practices:** Maintaining coding best practices for high code quality and readability.
 
+
+
+## Technology Stack
+
+### Backend
+
+- 🚀 **Node.js:** The foundation of our server-side development, providing an efficient and scalable environment.
+
+- 🌐 **Express:** A fast, minimalist web framework for Node.js, enabling rapid API development.
+
+- 🍃 **MongoDB:** A flexible and robust NoSQL database for storing and managing data.
+
+- 🗄️ **Mongoose:** An elegant MongoDB object modeling tool that simplifies interactions with the database.
+
+- 🔐 **JSON Web Tokens (JWT):** For secure user authentication and data integrity.
+
+- 🔄 **CORS:** A middleware for enabling Cross-Origin Resource Sharing, enhancing security.
+
+### Logging and Monitoring
+
+- 📝 **Winston:** A versatile logging library for error tracking and debugging.
+
+- 🔄 **Winston Daily Rotate File:** A transport for Winston that enables log rotation and management.
+
+### Data Validation
+
+- 🛡️ **Zod:** A robust library for data validation, ensuring data accuracy and security.
+
+### Development Tools
+
+- 📐 **TypeScript:** A statically typed superset of JavaScript that enhances code quality and developer productivity.
+
+### DevOps and Quality Assurance
+
+- 📦 **Prettier:** Ensuring code formatting consistency and readability.
+
+- 📦 **ESLint Config Prettier:** Integrating Prettier with ESLint for code quality.
+
+- 🐕 **Husky:** For setting up Git hooks to improve code quality and prevent commits with issues.
+
+- 🚫 **Lint-Staged:** Enabling linting of staged files to maintain code quality.
+
+- 📌 **ts-node-dev:** A development tool for running TypeScript applications.
+
+### Environment and Configuration
+
+- 🧩 **Dotenv:** For managing environment variables in a clean and organized way.
+
+### Type Definitions (Dev)
+
+- 🧩 **@types/express:** TypeScript type definitions for the Express framework.
+
+- 🧩 **@types/jsonwebtoken:** TypeScript type definitions for JSON Web Tokens.
+
+- 🧩 **@types/cors:** TypeScript type definitions for CORS.
+
+- 🧩 **@types/http-errors:** TypeScript type definitions for HTTP errors.
