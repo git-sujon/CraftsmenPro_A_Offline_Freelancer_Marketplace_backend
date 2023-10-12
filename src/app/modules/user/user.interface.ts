@@ -27,6 +27,4 @@ export type UserModel = Model<IUser, Record<string, unknown>>;
 
 export interface IUserFilters {
   searchTerm?: string;
-  email?: string;
-  phoneNumber: string;
 }
