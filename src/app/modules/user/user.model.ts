@@ -19,7 +19,7 @@ const UserSchema = new Schema<IUser, UserModel>(
       required: true,
     },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     phoneNumber: { type: String, required: true, unique: true },
     location: {
       city: { type: String, required: true },

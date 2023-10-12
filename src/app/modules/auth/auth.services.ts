@@ -24,8 +24,6 @@ const signUp = async (payload: IUser) => {
     );
   }
 
-
-
   const result = await User.create(payload);
 
   const email = result.id;
@@ -43,15 +41,9 @@ const signUp = async (payload: IUser) => {
 };
 
 const login = async (payload: ILogin): Promise<ILoginUserResponse> => {
-
-
-
   const { email, password } = payload;
 
   const isUserExist = await User.isUserExist(email);
-
-
-
 
   if (!isUserExist) {
     throw new APIError(httpStatus.NOT_FOUND, 'User does not exist');

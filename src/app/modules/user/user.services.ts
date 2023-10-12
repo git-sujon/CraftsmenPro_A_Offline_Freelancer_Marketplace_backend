@@ -10,7 +10,8 @@ import { User } from './user.model';
 
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
-  const result = await User.findOne({ _id: id }).populate('Review');
+  const result = await User.findOne({ _id: id })
+  // .populate('Review');
   return result;
 };
 
@@ -53,7 +54,7 @@ const getAllUsers = async (
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await User.find(whereConditions)
-    .populate('Review')
+    // .populate('Review')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
