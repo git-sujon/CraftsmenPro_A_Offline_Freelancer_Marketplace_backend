@@ -1,8 +1,10 @@
 import { Model, Schema } from 'mongoose';
 
 export interface IUser {
-  firstName: string;
-  lastName: string;
+  name: {
+    firstName: string;
+    lastName: string;
+  };
   email: string;
   password: string;
   phoneNumber: string;
@@ -23,18 +25,13 @@ export interface IUser {
   verifyTokenExpiryDate?: Date;
 }
 
-
 export type UserModel = {
-  isUserExist(
-    _id: string
-  ): Promise<Pick<IUser, 'email' | 'password' | 'role' >>;
+  isUserExist(_id: string): Promise<Pick<IUser, 'email' | 'password' | 'role'>>;
   isPasswordMatched(
     givenPassword: string,
-    savedPassword: string
+    savedPassword: string,
   ): Promise<boolean>;
 } & Model<IUser>;
-
-
 
 export interface IUserFilters {
   searchTerm?: string;

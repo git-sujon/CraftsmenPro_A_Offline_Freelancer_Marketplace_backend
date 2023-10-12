@@ -1,11 +1,14 @@
 import { z } from 'zod';
 
 const createUserSchema = z.object({
-  firstName: z.string({
-    required_error: 'First name is required',
-  }),
-  lastName: z.string({
-    required_error: 'Last name is required',
+  name: z.object({
+    firstName: z.string({
+      required_error: 'First name is required',
+    }),
+
+    lastName: z.string({
+      required_error: 'Last name is required',
+    }),
   }),
   email: z
     .string({
@@ -17,8 +20,12 @@ const createUserSchema = z.object({
     required_error: 'Phone Number is required',
   }),
   location: z.object({
-    city: z.string(),
-    division: z.string(),
+    city: z.string({
+      required_error: 'City is required',
+    }),
+    division: z.string({
+      required_error: 'Division is required',
+    }),
   }),
   role: z.string(),
 });

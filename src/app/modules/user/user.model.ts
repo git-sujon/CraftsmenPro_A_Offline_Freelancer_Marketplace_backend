@@ -5,8 +5,19 @@ import config from '../../../config';
 // User Schema
 const UserSchema = new Schema<IUser, UserModel>(
   {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    name: {
+      type: {
+        firstName: {
+          type: String,
+          required: true,
+        },
+        lastName: {
+          type: String,
+          required: true,
+        },
+      },
+      required: true,
+    },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     phoneNumber: { type: String, required: true, unique: true },
@@ -53,7 +64,9 @@ UserSchema.statics.isPasswordMatched = async function (
   givenPassword: string,
   savedPassword: string,
 ): Promise<boolean> {
-  return await bcrypt.compare(givenPassword, savedPassword);
+  const comparePassword = await bcrypt.compare(givenPassword, savedPassword);
+
+  return comparePassword;
 };
 
 // User.create() / user.save()
@@ -64,7 +77,6 @@ UserSchema.pre('save', async function (next) {
     user.password,
     Number(config.bycrypt_salt_rounds),
   );
-
 
   next();
 });

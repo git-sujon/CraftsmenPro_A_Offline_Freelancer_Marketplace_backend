@@ -24,12 +24,7 @@ const signUp = async (payload: IUser) => {
     );
   }
 
-  // Hash the password asynchronously
-  const hash = await bcrypt.hash(
-    payload.password,
-    Number(config.bycrypt_salt_rounds),
-  );
-  payload.password = hash;
+
 
   const result = await User.create(payload);
 
@@ -48,9 +43,15 @@ const signUp = async (payload: IUser) => {
 };
 
 const login = async (payload: ILogin): Promise<ILoginUserResponse> => {
+
+
+
   const { email, password } = payload;
 
   const isUserExist = await User.isUserExist(email);
+
+
+
 
   if (!isUserExist) {
     throw new APIError(httpStatus.NOT_FOUND, 'User does not exist');
