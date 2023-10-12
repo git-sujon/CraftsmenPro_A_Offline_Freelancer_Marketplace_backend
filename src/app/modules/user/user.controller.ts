@@ -8,6 +8,7 @@ import pick from '../../../shared/pick';
 
 import { paginationFieldsConstant } from '../../../constant.ts/paginationFieldsConstant';
 import { userFilterAbleFields } from './user.constents';
+import { IDeletedResponse } from '../../../interfaces/common';
 
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -55,11 +56,11 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await UserServices.deleteUser(id);
 
-  sendResponse<IUser>(res, {
+  sendResponse<IDeletedResponse>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User deleted successfully',
-    data: result!,
+    data: result,
   });
 });
 

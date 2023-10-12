@@ -6,7 +6,11 @@ export interface IServiceProvider {
     serviceCategory: string;
     serviceType: String;
     description: string;
-    serviceAreas: string[];
+    serviceAreas: {
+        areaName:string
+        cityName:string
+        division:string
+    }[];
     servicesOffered: string[];
     isVerified: boolean;
     isAvailable: boolean;
@@ -36,3 +40,13 @@ export interface IServiceProvider {
     Record<string, unknown>
   >;
   
+
+
+  export interface IServiceProviderFilters {
+    searchTerm?: string;
+    companyName?: string;
+    serviceCategory?: string;
+    serviceType?: String;
+    isVerified?: boolean;
+    isAvailable?: boolean;
+  }

@@ -1,3 +1,4 @@
+import { SortOrder } from 'mongoose'
 import { IGenericErrorMessage } from './error'
 
 export type IGenericResponse<T> = {
@@ -18,3 +19,9 @@ export type IGenericErrorResponse = {
 
 
 export type ISortCondition = { [key: string]: SortOrder };
+
+
+export interface IDeletedResponse {
+  acknowledged: boolean,
+  deletedCount: number
+}

@@ -35,4 +35,6 @@ export type UserModel = {
 
 export interface IUserFilters {
   searchTerm?: string;
+  email?: string;
+  phone?: string;
 }

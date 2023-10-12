@@ -1,6 +1,6 @@
 import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
-import { IGenericResponse } from '../../../interfaces/common';
+import { IDeletedResponse, IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { userSearchAbleFields } from './user.constents';
 import { IUser } from './user.interface';
@@ -81,8 +81,12 @@ const userUpdate = async (
   return result;
 };
 
-const deleteUser = async (id: string) => {
+const deleteUser = async (id: string):Promise<IDeletedResponse> => {
   const result = await User.deleteOne({ _id: id });
+
+  console.log("result:", result)
+
+  return result
 };
 
 export const UserServices = {
