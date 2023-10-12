@@ -12,7 +12,14 @@ const verifiedToken = (token: string, secret: Secret): JwtPayload => {
   return jwt.verify(token, secret) as JwtPayload;
 };
 
-export const jwtHelpers = {
+export const jwtHelpers: {
+  createToken: (
+    payload: Record<string, unknown>,
+    secret: Secret,
+    expireTime: string
+  ) => string;
+  verifiedToken: (token: string, secret: Secret) => JwtPayload;
+} = {
   createToken,
   verifiedToken,
 };

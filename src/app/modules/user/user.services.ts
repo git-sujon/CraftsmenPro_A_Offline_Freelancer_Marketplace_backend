@@ -7,10 +7,7 @@ import { IUser } from './user.interface';
 import { IUserFilters } from './user.interface';
 import { User } from './user.model';
 
-const createUser = async (payload: IUser) => {
-  const result = await User.create(payload);
-  return result;
-};
+
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const result = await User.findOne({ _id: id }).populate('Review');
@@ -88,7 +85,6 @@ const deleteUser = async (id: string) => {
 };
 
 export const UserServices = {
-  createUser,
   getSingleUser,
   getAllUsers,
   userUpdate,

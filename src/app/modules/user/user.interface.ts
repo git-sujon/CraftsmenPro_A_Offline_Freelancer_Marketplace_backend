@@ -23,7 +23,18 @@ export interface IUser {
   verifyTokenExpiryDate?: Date;
 }
 
-export type UserModel = Model<IUser, Record<string, unknown>>;
+
+export type UserModel = {
+  isUserExist(
+    _id: string
+  ): Promise<Pick<IUser, 'email' | 'password' | 'role' >>;
+  isPasswordMatched(
+    givenPassword: string,
+    savedPassword: string
+  ): Promise<boolean>;
+} & Model<IUser>;
+
+
 
 export interface IUserFilters {
   searchTerm?: string;

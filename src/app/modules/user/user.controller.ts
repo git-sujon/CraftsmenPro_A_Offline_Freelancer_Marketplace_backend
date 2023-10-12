@@ -9,18 +9,6 @@ import pick from '../../../shared/pick';
 import { paginationFieldsConstant } from '../../../constant.ts/paginationFieldsConstant';
 import { userFilterAbleFields } from './user.constents';
 
-const createDepartment = catchAsync(async (req: Request, res: Response) => {
-  const { ...userData } = req.body;
-  const result = await UserServices.createUser(userData);
-
-  sendResponse<IUser>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'User created successfully',
-    data: result,
-  });
-});
-
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await UserServices.getSingleUser(id);
@@ -75,8 +63,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const ServiceController = {
-  createDepartment,
+export const UserController = {
   getSingleUser,
   getAllUser,
   userUpdate,

@@ -1,4 +1,6 @@
 import express, { Router } from 'express'
+import { UserRoutes } from '../modules/user/user.route'
+import { AuthRoutes } from '../modules/auth/auth.route'
 
 
 const router = express.Router()
@@ -9,10 +11,14 @@ type IModuleRoutes={
 }
 
 const moduleRoutes:IModuleRoutes[] = [
-  // {
-  //   path: '/books/',
-  //   route: RouteName,
-  // },
+  {
+    path: '/auth/',
+    route: AuthRoutes,
+  },
+  {
+    path: '/users/',
+    route: UserRoutes,
+  },
   
 ]
 
