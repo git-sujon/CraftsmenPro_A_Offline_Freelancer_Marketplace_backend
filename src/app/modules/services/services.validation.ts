@@ -28,37 +28,39 @@ const contactSchema = z.object({
 });
 
 const serviceSchema = z.object({
-  title: z.string({
-    required_error: 'Title is required',
+  body: z.object({
+    title: z.string({
+      required_error: 'Title is required',
+    }),
+    description: z.string({
+      required_error: 'Description is required',
+    }),
+    category: z.string({
+      required_error: 'Category is required',
+    }),
+    subcategory: z.string({
+      required_error: 'Subcategory is required',
+    }),
+    price: z.number({
+      required_error: 'Price is required',
+    }),
+    location: locationSchema,
+    contact: contactSchema,
+    averageRating: z.number().optional(),
+    reviews: z.array(z.string()).optional(),
+    availableTimeSlots: z.array(
+      z.string({
+        required_error: 'Available Time Slot is required',
+      }),
+    ),
+    bookedTimeSlots: z.array(z.string()).optional(),
+    duration: z.number({
+      required_error: 'Duration is required',
+    }),
+    searchEngineOptimizationTags: z.array(z.string()).optional(),
+    features: z.array(z.string()).optional(),
+    faqs: z.array(z.string()).optional(),
   }),
-  description: z.string({
-    required_error: 'Description is required',
-  }),
-  category: z.string({
-    required_error: 'Category is required',
-  }),
-  subcategory: z.string({
-    required_error: 'Subcategory is required',
-  }),
-  price: z.number({
-    required_error: 'Price is required',
-  }),
-  location: locationSchema,
-  contact: contactSchema,
-  averageRating: z.number().optional(),
-  reviews: z.array(z.string()).optional(),
-  availableTimeSlots: z.array(
-    z.string({
-      required_error: 'Available Time Slot is required',
-    })
-  ),
-  bookedTimeSlots: z.array(z.string()).optional(),
-  duration: z.number({
-    required_error: 'Duration is required',
-  }),
-  searchEngineOptimizationTags: z.array(z.string()).optional(),
-  features: z.array(z.string()).optional(),
-  faqs: z.array(z.string()).optional(),
 });
 
 export const ServiceValidation = { createServiceSchema: serviceSchema };
