@@ -2,34 +2,33 @@ import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IDeletedResponse, IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { userSearchAbleFields } from './user.constants';
-import { IUser } from './user.interface';
-import { IUserFilters } from './user.interface';
-import { User } from './user.model';
+import { serviceSearchAbleFields } from './services.constants';
+import { IService, IServiceFilters } from './services.interface';
+import { Service } from './services.model';
 
-
-
-const getSingleUser = async (id: string): Promise<IUser | null> => {
-  const result = await User.findOne({ _id: id })
-  // .populate('Review');
+const createIntoDatabase = async (payload: IService): Promise<IService> => {
+  const result = await Service.create(payload);
   return result;
 };
 
-const getAllUsers = async (
-  filters: IUserFilters,
+const getSingleData = async (id: string): Promise<IService | null> => {
+  const result = await Service.findOne({ _id: id });
+  return result;
+};
+
+const getAllFromDatabase = async (
+  filters: IServiceFilters,
   paginationOptions: IPaginationOptions,
-): Promise<IGenericResponse<IUser[]>> => {
-  // Extract searchTerm to implement search query
+): Promise<IGenericResponse<IService[]>> => {
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
   const andConditions = [];
 
-  // Search needs $or for searching in specified fields
   if (searchTerm) {
     andConditions.push({
-      $or: userSearchAbleFields.map(field => ({
+      $or: serviceSearchAbleFields.map((field) => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',
@@ -37,7 +36,7 @@ const getAllUsers = async (
       })),
     });
   }
-  // Filters needs $and to fullfill all the conditions
+
   if (Object.keys(filtersData).length) {
     andConditions.push({
       $and: Object.entries(filtersData).map(([field, value]) => ({
@@ -45,21 +44,21 @@ const getAllUsers = async (
       })),
     });
   }
-  // Dynamic  Sort needs  field to  do sorting
+
   const sortConditions: { [key: string]: SortOrder } = {};
   if (sortBy && sortOrder) {
     sortConditions[sortBy] = sortOrder;
   }
+
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
-  const result = await User.find(whereConditions)
-    // .populate('Review')
+  const result = await Service.find(whereConditions)
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
 
-  const total = await User.countDocuments(whereConditions);
+  const total = await Service.countDocuments(whereConditions);
 
   return {
     meta: {
@@ -71,27 +70,25 @@ const getAllUsers = async (
   };
 };
 
-const userUpdate = async (
+const updateSingleData = async (
   id: string,
-  payload: Partial<IUser>,
-): Promise<IUser | null> => {
-  const result = await User.findOneAndUpdate({ _id: id }, payload, {
+  payload: Partial<IService>,
+): Promise<IService | null> => {
+  const result = await Service.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   });
   return result;
 };
 
-const deleteUser = async (id: string):Promise<IDeletedResponse> => {
-  const result = await User.deleteOne({ _id: id });
-
-  console.log("result:", result)
-
-  return result
+const deleteSingleData = async (id: string): Promise<IDeletedResponse> => {
+  const result = await Service.deleteOne({ _id: id });
+  return result;
 };
 
-export const UserServices = {
-  getSingleUser,
-  getAllUsers,
-  userUpdate,
-  deleteUser,
+export const ServiceServices = {
+  createIntoDatabase,
+  getSingleData,
+  getAllFromDatabase,
+  updateSingleData,
+  deleteSingleData,
 };

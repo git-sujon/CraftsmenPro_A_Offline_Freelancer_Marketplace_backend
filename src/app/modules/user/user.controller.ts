@@ -7,7 +7,7 @@ import { UserServices } from './user.services';
 import pick from '../../../shared/pick';
 
 import { paginationFieldsConstant } from '../../../constant.ts/paginationFieldsConstant';
-import { userFilterAbleFields } from './user.constents';
+import { userFilterAbleFields } from './user.constants';
 import { IDeletedResponse } from '../../../interfaces/common';
 
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
@@ -37,20 +37,18 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const userUpdate = catchAsync(
-  catchAsync(async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const updatedData = req.body;
-    const result = await UserServices.userUpdate(id, updatedData);
+const userUpdate = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedData = req.body;
+  const result = await UserServices.userUpdate(id, updatedData);
 
-    sendResponse<IUser>(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'User updated successfully',
-      data: result,
-    });
-  }),
-);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated successfully',
+    data: result,
+  });
+});
 
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;

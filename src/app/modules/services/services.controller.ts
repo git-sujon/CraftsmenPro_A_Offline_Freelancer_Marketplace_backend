@@ -1,33 +1,31 @@
 import httpStatus from 'http-status';
 import sendResponse from '../../../shared/sendResponse';
-
 import catchAsync from '../../../shared/catchAsync';
 import { Request, Response } from 'express';
 import pick from '../../../shared/pick';
-
 import { paginationFieldsConstant } from '../../../constant.ts/paginationFieldsConstant';
-import { ServiceProviderServices } from './servicesProvider.services';
-import { IServiceProvider } from './servicesProvider.interface';
-import { serviceProviderFilterAbleFields } from './servicesProvider.constants';
+import { ServiceServices } from './services.services';
+import { IService } from './services.interface';
+import { serviceFilterAbleFields } from './services.constants';
 import { IDeletedResponse } from '../../../interfaces/common';
 
 const createIntoDatabase = catchAsync(async (req: Request, res: Response) => {
   const { ...data } = req.body;
-  const result = await ServiceProviderServices.createIntoDatabase(data);
+  const result = await ServiceServices.createIntoDatabase(data);
 
-  sendResponse<IServiceProvider>(res, {
+  sendResponse<IService>(res, {
     statusCode: 200,
     success: true,
-    message: 'Data Created successfully !',
+    message: 'Data Created successfully!',
     data: result,
   });
 });
 
 const getSingleData = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await ServiceProviderServices.getSingleData(id);
+  const result = await ServiceServices.getSingleData(id);
 
-  sendResponse<IServiceProvider>(res, {
+  sendResponse<IService>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Data fetched successfully',
@@ -36,18 +34,18 @@ const getSingleData = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDatabase = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, serviceProviderFilterAbleFields);
+  const filters = pick(req.query, serviceFilterAbleFields);
   const paginationOptions = pick(req.query, paginationFieldsConstant);
 
-  const result = await ServiceProviderServices.getAllFromDatabase(
+  const result = await ServiceServices.getAllFromDatabase(
     filters,
     paginationOptions,
   );
 
-  sendResponse<IServiceProvider[]>(res, {
+  sendResponse<IService[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'all Data fetched successfully',
+    message: 'All Data fetched successfully',
     meta: result.meta,
     data: result.data,
   });
@@ -56,12 +54,9 @@ const getAllFromDatabase = catchAsync(async (req: Request, res: Response) => {
 const updateSingleData = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedData = req.body;
-  const result = await ServiceProviderServices.updateSingleData(
-    id,
-    updatedData,
-  );
+  const result = await ServiceServices.updateSingleData(id, updatedData);
 
-  sendResponse<IServiceProvider>(res, {
+  sendResponse<IService>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Data updated successfully',
@@ -71,17 +66,17 @@ const updateSingleData = catchAsync(async (req: Request, res: Response) => {
 
 const deleteSingleData = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const result = await ServiceProviderServices.deleteSingleData(id);
+  const result = await ServiceServices.deleteSingleData(id);
 
   sendResponse<IDeletedResponse>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'User deleted successfully',
+    message: 'Data deleted successfully',
     data: result,
   });
 });
 
-export const ServiceProviderController = {
+export const ServiceController = {
   createIntoDatabase,
   getSingleData,
   getAllFromDatabase,

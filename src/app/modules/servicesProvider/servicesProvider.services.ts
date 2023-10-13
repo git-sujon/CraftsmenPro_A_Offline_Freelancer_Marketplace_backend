@@ -2,7 +2,7 @@ import { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IDeletedResponse, IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { serviceProviderSearchAbleFields } from './servicesProvider.constents';
+import { serviceProviderSearchAbleFields } from './servicesProvider.constants';
 import {
   IServiceProvider,
   IServiceProviderFilters,
@@ -12,15 +12,13 @@ import { ServiceProvider } from './servicesProvider.model';
 const createIntoDatabase = async (
   payload: IServiceProvider,
 ): Promise<IServiceProvider> => {
-  const result = await ServiceProvider.create({
-    payload,
-  });
+  const result = await ServiceProvider.create(payload);
 
   return result;
 };
 
 const getSingleData = async (id: string): Promise<IServiceProvider | null> => {
-  const result = await ServiceProvider.findOne({ _id: id }).populate('User');
+  const result = await ServiceProvider.findOne({ _id: id }).populate('user');
   return result;
 };
 
@@ -63,7 +61,7 @@ const getAllFromDatabase = async (
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await ServiceProvider.find(whereConditions)
-    .populate('User')
+    .populate('user')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);
@@ -90,7 +88,7 @@ const updateSingleData = async (
   return result;
 };
 
-const deleteSingleData = async (id: string):Promise<IDeletedResponse> => {
+const deleteSingleData = async (id: string): Promise<IDeletedResponse> => {
   const result = await ServiceProvider.deleteOne({ _id: id });
   return result;
 };
