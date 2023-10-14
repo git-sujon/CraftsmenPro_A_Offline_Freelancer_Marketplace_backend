@@ -2,6 +2,7 @@ import { Document, Schema, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../../config';
+import { genderConstants } from '../../../interfaces/constants';
 // User Schema
 const UserSchema = new Schema<IUser, UserModel>(
   {
@@ -21,11 +22,16 @@ const UserSchema = new Schema<IUser, UserModel>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: 0 },
     phoneNumber: { type: String, required: true, unique: true },
+    gender: {
+      type: String,
+      enum: genderConstants,
+      required: true,
+    },
     location: {
       city: { type: String, required: true },
       division: { type: String, required: true },
     },
-    role: { type: String, required: true },
+    role: { type: String, required: true, default:"user" },
     isServiceProvider: { type: Boolean, default: false },
     profilePicture: { type: String },
     lastLogin: { type: Date },

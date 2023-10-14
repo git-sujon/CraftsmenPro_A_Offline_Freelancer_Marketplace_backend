@@ -1,4 +1,10 @@
 import { z } from 'zod';
+const genderConstants = [
+  'male',
+  'female',
+  'other',
+  'prefer-not-to-say',
+] as const;
 
 const signUpSchema = z.object({
   body: z.object({
@@ -23,6 +29,9 @@ const signUpSchema = z.object({
       .min(8, 'Password must be at least 8 characters long'),
     phoneNumber: z.string({
       required_error: 'Phone Number is required',
+    }),
+    gender: z.enum(genderConstants, {
+      required_error: 'Booking status is required',
     }),
     location: z.object({
       city: z.string({

@@ -1,5 +1,5 @@
 import { Model, Schema } from 'mongoose';
-
+type GenderEnum = 'male' | 'female' | 'other' | 'prefer-not-to-say';
 export interface IUser {
   name: {
     firstName: string;
@@ -8,6 +8,7 @@ export interface IUser {
   email: string;
   password: string;
   phoneNumber: string;
+  gender: GenderEnum;
   location: {
     city: string;
     division: string;

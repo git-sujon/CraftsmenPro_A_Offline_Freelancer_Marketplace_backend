@@ -7,6 +7,9 @@ import config from '../../../config';
 
 const signUp = catchAsync(async (req: Request, res: Response) => {
   const { ...userData } = req.body;
+
+  console.log("userData:", userData)
+
   const result = await AuthServices.signUp(userData);
 
   sendResponse<ILoginUserResponse>(res, {
