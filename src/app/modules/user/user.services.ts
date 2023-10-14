@@ -6,13 +6,38 @@ import { userSearchAbleFields } from './user.constants';
 import { IUser } from './user.interface';
 import { IUserFilters } from './user.interface';
 import { User } from './user.model';
-
+import APIError from '../../../errors/ApiErrors';
+import httpStatus from 'http-status';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import { Secret } from 'jsonwebtoken';
+import config from '../../../config';
+import bcrypt from 'bcrypt'
 
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const result = await User.findOne({ _id: id })
   // .populate('Review');
   return result;
+};
+
+const getMyProfile = async (token: string | undefined): Promise<IUser | null> => {
+  if (!token) {
+    throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access')
+  }
+
+  const verifyToken = jwtHelpers.verifiedToken(
+    token as string,
+    config.jwt.secret as Secret
+  )
+
+  console.log("verifyToken:", verifyToken)
+
+
+  const { email } = verifyToken
+
+  const result = await User.findOne({email})
+
+  return result
 };
 
 const getAllUsers = async (
@@ -89,9 +114,41 @@ const deleteUser = async (id: string):Promise<IDeletedResponse> => {
   return result
 };
 
+const updateMyProfile = async (
+  token: string | undefined,
+  payload: Partial<IUser>
+) => {
+  if (!token) {
+    throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access')
+  }
+
+  const verifyToken = jwtHelpers.verifiedToken(
+    token as string,
+    config.jwt.secret as Secret
+  )
+
+  if (payload.password) {
+    payload.password = await bcrypt.hash(
+      payload.password,
+      Number(config.bycrypt_salt_rounds)
+    )
+  }
+
+  const { email } = verifyToken
+
+  const result = await User.updateOne({email}, payload, { new: true })
+
+  return result
+}
+
+
+
 export const UserServices = {
   getSingleUser,
+  getMyProfile,
   getAllUsers,
   userUpdate,
   deleteUser,
+  updateMyProfile,
+  
 };

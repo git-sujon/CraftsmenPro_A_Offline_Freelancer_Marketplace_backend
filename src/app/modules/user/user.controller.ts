@@ -22,6 +22,22 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMyProfile = catchAsync(async (req: Request, res: Response) => {
+
+  const authToken = req.headers.authorization!
+
+
+
+  const result = await UserServices.getMyProfile(authToken);
+
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User fetched successfully',
+    data: result,
+  });
+});
+
 const getAllUser = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, userFilterAbleFields);
   const paginationOptions = pick(req.query, paginationFieldsConstant);
@@ -50,6 +66,21 @@ const userUpdate = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateMyProfile = catchAsync(
+  async (req: Request, res: Response) => {
+    const authToken = req.headers.authorization
+    const updatedInfo = req.body
+
+    const result = await UserServices.updateMyProfile(authToken, updatedInfo)
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User's information Update successfully",
+      data: result,
+    })
+  }
+)
+
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await UserServices.deleteUser(id);
@@ -64,7 +95,9 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   getSingleUser,
+  getMyProfile,
   getAllUser,
   userUpdate,
+  updateMyProfile,
   deleteUser,
 };
