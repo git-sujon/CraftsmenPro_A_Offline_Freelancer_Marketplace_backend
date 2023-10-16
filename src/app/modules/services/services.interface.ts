@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { Model, Schema } from 'mongoose';
 
 export interface IService {
@@ -17,10 +18,10 @@ export interface IService {
     phone: string;
     role: string;
   };
+  servicesProvider: Types.ObjectId;
   averageRating?: number;
-  reviews?: Schema.Types.ObjectId[];
-  availableTimeSlots: string[];
-  bookedTimeSlots?: string[];
+  availableTimeSlots: Array<{ date: Date; time: string }>;
+  bookedTimeSlots?: Array<{ date: Date; time: string }>;
   duration: number;
   searchEngineOptimizationTags?: string[];
   features?: string[];

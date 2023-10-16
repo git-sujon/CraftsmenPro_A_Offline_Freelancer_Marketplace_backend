@@ -2,6 +2,7 @@ import express, { Router } from 'express'
 import { UserRoutes } from '../modules/user/user.route'
 import { AuthRoutes } from '../modules/auth/auth.route'
 import { ServiceProviderRoutes } from '../modules/servicesProvider/servicesProvider.route'
+import { ServiceRoutes } from '../modules/services/services.route'
 
 
 const router = express.Router()
@@ -23,6 +24,10 @@ const moduleRoutes:IModuleRoutes[] = [
   {
     path: '/services-provider/',
     route: ServiceProviderRoutes,
+  },
+  {
+    path: '/services/',
+    route: ServiceRoutes,
   },
   
 ]

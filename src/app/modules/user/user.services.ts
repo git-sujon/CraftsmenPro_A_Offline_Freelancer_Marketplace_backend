@@ -6,38 +6,26 @@ import { userSearchAbleFields } from './user.constants';
 import { IUser } from './user.interface';
 import { IUserFilters } from './user.interface';
 import { User } from './user.model';
-import APIError from '../../../errors/ApiErrors';
-import httpStatus from 'http-status';
-import { jwtHelpers } from '../../../helpers/jwtHelpers';
-import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
-import bcrypt from 'bcrypt'
-
+import bcrypt from 'bcrypt';
+import { Verifications } from '../../../helpers/Verifications';
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
-  const result = await User.findOne({ _id: id })
+  const result = await User.findOne({ _id: id });
   // .populate('Review');
   return result;
 };
 
-const getMyProfile = async (token: string | undefined): Promise<IUser | null> => {
-  if (!token) {
-    throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access')
-  }
+const getMyProfile = async (
+  token: string | undefined,
+): Promise<IUser | null> => {
+  const verifyToken = Verifications.verifiedUser(token as string);
 
-  const verifyToken = jwtHelpers.verifiedToken(
-    token as string,
-    config.jwt.secret as Secret
-  )
+  const { email } = verifyToken;
 
-  console.log("verifyToken:", verifyToken)
+  const result = await User.findOne({ email });
 
-
-  const { email } = verifyToken
-
-  const result = await User.findOne({email})
-
-  return result
+  return result;
 };
 
 const getAllUsers = async (
@@ -106,42 +94,31 @@ const userUpdate = async (
   return result;
 };
 
-const deleteUser = async (id: string):Promise<IDeletedResponse> => {
+const deleteUser = async (id: string): Promise<IDeletedResponse> => {
   const result = await User.deleteOne({ _id: id });
 
-  console.log("result:", result)
-
-  return result
+  return result;
 };
 
 const updateMyProfile = async (
   token: string | undefined,
-  payload: Partial<IUser>
+  payload: Partial<IUser>,
 ) => {
-  if (!token) {
-    throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access')
-  }
-
-  const verifyToken = jwtHelpers.verifiedToken(
-    token as string,
-    config.jwt.secret as Secret
-  )
+  const verifyToken = Verifications.verifiedUser(token as string);
 
   if (payload.password) {
     payload.password = await bcrypt.hash(
       payload.password,
-      Number(config.bycrypt_salt_rounds)
-    )
+      Number(config.bycrypt_salt_rounds),
+    );
   }
 
-  const { email } = verifyToken
+  const { email } = verifyToken;
 
-  const result = await User.updateOne({email}, payload, { new: true })
+  const result = await User.updateOne({ email }, payload, { new: true });
 
-  return result
-}
-
-
+  return result;
+};
 
 export const UserServices = {
   getSingleUser,
@@ -150,5 +127,4 @@ export const UserServices = {
   userUpdate,
   deleteUser,
   updateMyProfile,
-  
 };

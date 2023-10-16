@@ -27,40 +27,46 @@ const contactSchema = z.object({
   }),
 });
 
-const serviceSchema = z.object({
-  body: z.object({
-    title: z.string({
-      required_error: 'Title is required',
-    }),
-    description: z.string({
-      required_error: 'Description is required',
-    }),
-    category: z.string({
-      required_error: 'Category is required',
-    }),
-    subcategory: z.string({
-      required_error: 'Subcategory is required',
-    }),
-    price: z.number({
-      required_error: 'Price is required',
-    }),
-    location: locationSchema,
-    contact: contactSchema,
-    averageRating: z.number().optional(),
-    reviews: z.array(z.string()).optional(),
-    availableTimeSlots: z.array(
-      z.string({
-        required_error: 'Available Time Slot is required',
-      }),
-    ),
-    bookedTimeSlots: z.array(z.string()).optional(),
-    duration: z.number({
-      required_error: 'Duration is required',
-    }),
-    searchEngineOptimizationTags: z.array(z.string()).optional(),
-    features: z.array(z.string()).optional(),
-    faqs: z.array(z.string()).optional(),
+const timeSlotSchema = z.object({
+  date: z.date({
+    required_error: 'Date is required',
+  }),
+  time: z.string({
+    required_error: 'Time is required',
   }),
 });
 
-export const ServiceValidation = { createServiceSchema: serviceSchema };
+const serviceSchema = z.object({
+  title: z.string({
+    required_error: 'Title is required',
+  }),
+  description: z.string({
+    required_error: 'Description is required',
+  }),
+  category: z.string({
+    required_error: 'Category is required',
+  }),
+  subcategory: z.string({
+    required_error: 'Subcategory is required',
+  }),
+  price: z.number({
+    required_error: 'Price is required',
+  }),
+  location: locationSchema,
+  contact: contactSchema,
+  servicesProvider: z.string({
+    required_error: 'Services Provider Id is required',
+  }),
+  averageRating: z.number().optional(),
+  reviews: z.array(z.string()).optional(),
+  availableTimeSlots: z.array(timeSlotSchema),
+  bookedTimeSlots: z.array(timeSlotSchema).optional(),
+  duration: z.number({
+    required_error: 'Duration is required',
+  }),
+  searchEngineOptimizationTags: z.array(z.string()).optional(),
+  features: z.array(z.string()).optional(),
+  faqs: z.array(z.string()).optional(),
+});
+
+export const ServiceValidation = { serviceSchema };

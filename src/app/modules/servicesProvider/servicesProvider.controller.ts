@@ -13,6 +13,8 @@ import { IDeletedResponse } from '../../../interfaces/common';
 
 const createIntoDatabase = catchAsync(async (req: Request, res: Response) => {
   const { ...data } = req.body;
+
+
   const result = await ServiceProviderServices.createIntoDatabase(data);
 
   sendResponse<IServiceProvider>(res, {

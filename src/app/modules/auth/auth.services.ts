@@ -26,7 +26,7 @@ const signUp = async (payload: IUser) => {
 
   const result = await User.create(payload);
 
-  const email = result.id;
+  const email = result.email;
   const role = result.role;
 
   const accessToken = jwtHelpers.createToken(

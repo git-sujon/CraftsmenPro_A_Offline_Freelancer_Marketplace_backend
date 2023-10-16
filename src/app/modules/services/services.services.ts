@@ -1,18 +1,44 @@
-import { SortOrder } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IDeletedResponse, IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { serviceSearchAbleFields } from './services.constants';
 import { IService, IServiceFilters } from './services.interface';
 import { Service } from './services.model';
+import { Verifications } from '../../../helpers/Verifications';
+import { User } from '../user/user.model';
+import APIError from '../../../errors/ApiErrors';
+import httpStatus from 'http-status';
+import config from '../../../config';
+import { Secret } from 'jsonwebtoken';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
-const createIntoDatabase = async (payload: IService): Promise<IService> => {
+const createIntoDatabase = async (
+  token: string | undefined,
+  payload: IService,
+) => {
+  if (!token) {
+    throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access');
+  }
+
+  const verifyToken = jwtHelpers.verifiedToken(
+    token as string,
+    config.jwt.secret as Secret,
+  );
+
+  const user = await User.findOne({ email: verifyToken?.email });
+  payload.servicesProvider = user?._id;
+
+  console.log(payload.servicesProvider);
+
   const result = await Service.create(payload);
   return result;
 };
 
 const getSingleData = async (id: string): Promise<IService | null> => {
-  const result = await Service.findOne({ _id: id });
+  const result = await Service.findOne({ _id: id }).populate(
+    'servicesProvider',
+  );
   return result;
 };
 
@@ -28,7 +54,7 @@ const getAllFromDatabase = async (
 
   if (searchTerm) {
     andConditions.push({
-      $or: serviceSearchAbleFields.map((field) => ({
+      $or: serviceSearchAbleFields.map(field => ({
         [field]: {
           $regex: searchTerm,
           $options: 'i',
@@ -54,6 +80,7 @@ const getAllFromDatabase = async (
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Service.find(whereConditions)
+    .populate('servicesProvider')
     .sort(sortConditions)
     .skip(skip)
     .limit(limit);

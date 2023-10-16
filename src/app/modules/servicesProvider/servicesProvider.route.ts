@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post(
   '/',
-  validationRequest(ServiceProviderValidation.createServiceProviderSchema),
+  // validationRequest(ServiceProviderValidation.createServiceProviderSchema),
   ServiceProviderController.createIntoDatabase,
 );
 router.get('/', ServiceProviderController.getAllFromDatabase);

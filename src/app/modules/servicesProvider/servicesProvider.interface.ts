@@ -14,7 +14,7 @@ export interface IServiceProvider {
   servicesOffered: string[];
   isVerified: boolean;
   isAvailable: boolean;
-  averageRating?: number;
+  averageRating ?: number;
   totalRatings?: number;
   companyProfileImages?: {
     imageName: string;

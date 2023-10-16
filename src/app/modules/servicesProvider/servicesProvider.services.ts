@@ -1,4 +1,4 @@
-import { SortOrder } from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IDeletedResponse, IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -8,13 +8,55 @@ import {
   IServiceProviderFilters,
 } from './servicesProvider.interface';
 import { ServiceProvider } from './servicesProvider.model';
+import { User } from '../user/user.model';
+import { ENUM_USER_ROLE } from '../../../enums/user';
+import APIError from '../../../errors/ApiErrors';
+import httpStatus from 'http-status';
 
-const createIntoDatabase = async (
-  payload: IServiceProvider,
-): Promise<IServiceProvider> => {
-  const result = await ServiceProvider.create(payload);
+const createIntoDatabase = async (payload: IServiceProvider) => {
+  const _id = payload.user;
 
-  return result;
+  const isExist = await User.findById(_id);
+
+  if (!isExist) throw new APIError(httpStatus.NOT_FOUND, 'User not found !');
+
+  if (isExist && isExist.role === ENUM_USER_ROLE.SERVICES_PROVIDER)
+    throw new APIError(
+      httpStatus.BAD_REQUEST,
+      'User already exist as Service Provider !',
+    );
+
+  if (isExist && isExist.role === ENUM_USER_ROLE.ADMIN)
+    throw new APIError(httpStatus.BAD_REQUEST, 'User already exist as Admin !');
+
+  if (isExist && isExist.role === ENUM_USER_ROLE.SUPER_ADMIN)
+    throw new APIError(
+      httpStatus.BAD_REQUEST,
+      'User already exist as Super Admin !',
+    );
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const userUpdate = await User.findByIdAndUpdate(
+      { _id: isExist._id },
+      {
+        role: ENUM_USER_ROLE.SERVICES_PROVIDER,
+        isServiceProvider: true,
+      },
+    );
+
+    const result = await ServiceProvider.create(payload);
+
+    session.commitTransaction();
+    session.endSession();
+    return result;
+  } catch (error) {
+    session.abortTransaction();
+    throw error;
+  }
 };
 
 const getSingleData = async (id: string): Promise<IServiceProvider | null> => {

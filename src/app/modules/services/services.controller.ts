@@ -11,7 +11,11 @@ import { IDeletedResponse } from '../../../interfaces/common';
 
 const createIntoDatabase = catchAsync(async (req: Request, res: Response) => {
   const { ...data } = req.body;
-  const result = await ServiceServices.createIntoDatabase(data);
+  const authToken = req.headers.authorization
+
+
+
+  const result = await ServiceServices.createIntoDatabase(authToken,data);
 
   sendResponse<IService>(res, {
     statusCode: 200,

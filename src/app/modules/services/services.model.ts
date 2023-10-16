@@ -14,25 +14,36 @@ const contactSchema = new Schema({
   role: { type: String, required: true },
 });
 
-const ServiceSchema = new Schema<IService>(
-  {
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    category: { type: String, required: true },
-    subcategory: { type: String, required: true },
-    price: { type: Number, required: true },
-    location: { type: locationSchema, required: true },
-    contact: { type: contactSchema, required: true },
-    averageRating: { type: Number },
-    reviews: [{ type: Schema.Types.ObjectId }],
-    availableTimeSlots: [{ type: String, required: true }],
-    bookedTimeSlots: [{ type: String }],
-    duration: { type: Number, required: true },
-    searchEngineOptimizationTags: [{ type: String }],
-    features: [{ type: String }],
-    faqs: [{ type: String }],
+const ServiceSchema = new Schema<IService, ServiceModel>({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  category: { type: String, required: true },
+  subcategory: { type: String, required: true },
+  price: { type: Number, required: true },
+  location: { type: locationSchema, required: true },
+  contact: { type: contactSchema, required: true },
+  averageRating: { type: Number },
+  availableTimeSlots: [
+    {
+      date: { type: Date, required: true },
+      time: { type: String, required: true },
+    },
+  ],
+  bookedTimeSlots: [
+    {
+      date: { type: Date, required: true },
+      time: { type: String, required: true },
+    },
+  ],
+  duration: { type: Number, required: true },
+  servicesProvider: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
   },
-
-);
+  searchEngineOptimizationTags: [{ type: String }],
+  features: [{ type: String }],
+  faqs: [{ type: String }],
+});
 
 export const Service = model<IService, ServiceModel>('Service', ServiceSchema);

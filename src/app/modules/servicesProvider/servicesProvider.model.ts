@@ -14,8 +14,8 @@ const ServiceProviderSchema = new Schema<
   IServiceProvider,
   ServiceProviderModel
 >({
-  user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-  companyName: { type: String, required: true, unique: true },
+  user: { type: Schema.Types.ObjectId, required: true, ref: 'User' , unique:true},
+  companyName: { type: String, required: true},
   serviceCategory: { type: String, required: true },
   serviceType: { type: String, required: true },
   description: { type: String, required: true },
