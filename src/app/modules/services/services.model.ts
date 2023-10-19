@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { IService, ServiceModel } from './services.interface';
 
 const locationSchema = new Schema({
-  areaName: { type: String, required: true },
+  areaName: [{ type: String, required: true }],
   cityName: { type: String, required: true },
   division: { type: String, required: true },
 });
@@ -20,6 +20,8 @@ const ServiceSchema = new Schema<IService, ServiceModel>({
   category: { type: String, required: true },
   subcategory: { type: String, required: true },
   price: { type: Number, required: true },
+  serviceBanner: { type: String, required: true },
+  servicesImages: [{ type: String }],
   location: { type: locationSchema, required: true },
   contact: { type: contactSchema, required: true },
   averageRating: { type: Number },
@@ -43,7 +45,15 @@ const ServiceSchema = new Schema<IService, ServiceModel>({
   },
   searchEngineOptimizationTags: [{ type: String }],
   features: [{ type: String }],
-  faqs: [{ type: String }],
+  faqs: [
+    {
+      key: { type: String },
+      label: { type: String },
+      children: { type: String },
+    },
+  ],
+
+  isPopular: { type: Boolean, default: false },
 });
 
 export const Service = model<IService, ServiceModel>('Service', ServiceSchema);

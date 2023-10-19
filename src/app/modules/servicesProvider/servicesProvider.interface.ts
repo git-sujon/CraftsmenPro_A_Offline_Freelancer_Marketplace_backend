@@ -4,7 +4,7 @@ export interface IServiceProvider {
   user: Schema.Types.ObjectId;
   companyName: string;
   serviceCategory: string;
-  serviceType: String;
+  serviceType?: String[];
   description: string;
   serviceAreas: {
     areaName: string;

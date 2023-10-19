@@ -15,7 +15,7 @@ import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
 const createIntoDatabase = async (
   token: string | undefined,
-  payload: IService,
+  payload:any,
 ) => {
   if (!token) {
     throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access');
@@ -29,7 +29,7 @@ const createIntoDatabase = async (
   const user = await User.findOne({ email: verifyToken?.email });
   payload.servicesProvider = user?._id;
 
-  console.log(payload.servicesProvider);
+
 
   const result = await Service.create(payload);
   return result;

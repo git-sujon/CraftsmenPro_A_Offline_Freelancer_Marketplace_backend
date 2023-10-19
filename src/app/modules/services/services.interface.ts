@@ -7,8 +7,10 @@ export interface IService {
   category: string;
   subcategory: string;
   price: number;
+  serviceBanner:string;
+  servicesImages?:string[];
   location: {
-    areaName: string;
+    areaName: string[];
     cityName: string;
     division: string;
   };
@@ -25,7 +27,12 @@ export interface IService {
   duration: number;
   searchEngineOptimizationTags?: string[];
   features?: string[];
-  faqs?: string[];
+  faqs?: {
+    key: string;
+    label: string;
+    children: string;
+  }[];
+  isPopular?:boolean;
 }
 
 export type ServiceModel = Model<IService, Record<string, unknown>>;
