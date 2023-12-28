@@ -2,18 +2,21 @@ import { Model, Schema } from 'mongoose';
 // ServiceProvider interface
 export interface IServiceProvider {
   user: Schema.Types.ObjectId;
-  companyName: string;
+  providerName: string;
   serviceCategory: string;
-  serviceType?: String[];
+  serviceTypes?: String[];
   description: string;
   serviceAreas: {
-    areaName: string;
+    areaName: string[];
     cityName: string;
     division: string;
   }[];
   servicesOffered: string[];
-  isVerified: boolean;
-  isAvailable: boolean;
+  isVerified?: boolean;
+  isAvailable?: boolean;
+  providerProfileImage:string;
+  experience:number;
+
   averageRating ?: number;
   totalRatings?: number;
   companyProfileImages?: {

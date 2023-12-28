@@ -15,6 +15,8 @@ export interface IUser {
   };
   role: string;
   isServiceProvider: boolean;
+  isOnline?: boolean;
+  isBlocked?: boolean;
   profilePicture?: string;
   lastLogin?: Date;
   servicesBooked?: Schema.Types.ObjectId[];

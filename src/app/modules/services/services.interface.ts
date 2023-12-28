@@ -22,6 +22,7 @@ export interface IService {
   };
   servicesProvider: Types.ObjectId;
   averageRating?: number;
+  totalRatings:number;
   availableTimeSlots: Array<{ date: Date; time: string }>;
   bookedTimeSlots?: Array<{ date: Date; time: string }>;
   duration: number;

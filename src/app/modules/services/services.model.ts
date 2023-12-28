@@ -25,6 +25,7 @@ const ServiceSchema = new Schema<IService, ServiceModel>({
   location: { type: locationSchema, required: true },
   contact: { type: contactSchema, required: true },
   averageRating: { type: Number },
+  totalRatings: { type: Number },
   availableTimeSlots: [
     {
       date: { type: Date, required: true },
@@ -41,7 +42,7 @@ const ServiceSchema = new Schema<IService, ServiceModel>({
   servicesProvider: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'User',
+    ref: 'ServiceProvider',
   },
   searchEngineOptimizationTags: [{ type: String }],
   features: [{ type: String }],

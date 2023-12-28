@@ -5,7 +5,7 @@ import {
 } from './servicesProvider.interface';
 
 const serviceAreaSchema = new Schema({
-  areaName: { type: String, required: true },
+  areaName: [{ type: String, required: true }],
   cityName: { type: String, required: true },
   division: { type: String, required: true },
 });
@@ -15,9 +15,9 @@ const ServiceProviderSchema = new Schema<
   ServiceProviderModel
 >({
   user: { type: Schema.Types.ObjectId, required: true, ref: 'User' , unique:true},
-  companyName: { type: String, required: true},
+  providerName: { type: String, required: true},
   serviceCategory: { type: String, required: true },
-  serviceType:  [{ type: String }],
+  serviceTypes:  [{ type: String }],
   description: { type: String, required: true },
   serviceAreas: {
     type: [serviceAreaSchema],
@@ -26,6 +26,9 @@ const ServiceProviderSchema = new Schema<
   servicesOffered: [{ type: String }],
   isVerified: { type: Boolean, default: false },
   isAvailable: { type: Boolean, default: true },
+  providerProfileImage:{ type: String, required: true },
+  experience:{ type: Number, required: true },
+
   averageRating: { type: Number, default: 0 },
   totalRatings: { type: Number, default: 0 },
   companyProfileImages: {

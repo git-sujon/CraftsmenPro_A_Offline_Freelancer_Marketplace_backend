@@ -59,7 +59,7 @@ const getAllFromDatabase = async (
           $regex: searchTerm,
           $options: 'i',
         },
-      })),
+      })), 
     });
   }
 

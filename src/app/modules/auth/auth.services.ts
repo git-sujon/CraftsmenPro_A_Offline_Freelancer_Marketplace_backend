@@ -11,7 +11,7 @@ import { ILogin, ILoginUserResponse } from './auth.interface';
 const signUp = async (payload: IUser) => {
   const isUserExist = await User.isUserExist(payload.email);
   const isUserPhoneNumber = await User.findOne({
-    email: payload.phoneNumber,
+  phoneNumber: payload.phoneNumber,
   });
 
   if (isUserExist) {

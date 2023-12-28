@@ -1,15 +1,14 @@
-import express, { Request, Response } from 'express'
-import cors from 'cors'
+import express, { Request, Response } from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import routers from './app/routes'
-import httpStatus from 'http-status'
-import globalErrorHandler from './app/middleware/globalErrorHandler'
+import routers from './app/routes';
+import httpStatus from 'http-status';
+import globalErrorHandler from './app/middleware/globalErrorHandler';
 
-const app = express()
- 
+const app = express();
 
 // Configure CORS
-const allowedOrigins = ['http://localhost:3000']; // Update this with your frontend's URL(s)
+const allowedOrigins = ['http://localhost:3000', 'https://craftsmenpro-frontend-git-sujon.vercel.app']; // Update this with your frontend's URL(s)
 
 app.use(
   cors({
@@ -22,20 +21,19 @@ app.use(
       }
     },
     credentials: true, // Allow credentials (cookies)
-  })
+  }),
 );
 
 app.use(cookieParser());
 //  parser
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // application routes
-app.use('/api/v1/', routers)
+app.use('/api/v1/', routers);
 
 // global Error Handler
-app.use(globalErrorHandler)
+app.use(globalErrorHandler);
 
 // api not found Error handler
 app.use((req: Request, res: Response) => {
@@ -48,7 +46,7 @@ app.use((req: Request, res: Response) => {
         message: 'API NOT FOUND',
       },
     ],
-  })
-})
+  });
+});
 
-export default app
+export default app;
