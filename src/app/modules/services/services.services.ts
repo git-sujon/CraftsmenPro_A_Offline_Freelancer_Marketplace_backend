@@ -13,10 +13,7 @@ import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
-const createIntoDatabase = async (
-  token: string | undefined,
-  payload:any,
-) => {
+const createIntoDatabase = async (token: string | undefined, payload: any) => {
   if (!token) {
     throw new APIError(httpStatus.UNAUTHORIZED, 'Unauthorized access');
   }
@@ -28,8 +25,6 @@ const createIntoDatabase = async (
 
   const user = await User.findOne({ email: verifyToken?.email });
   payload.servicesProvider = user?._id;
-
-
 
   const result = await Service.create(payload);
   return result;
@@ -46,7 +41,7 @@ const getAllFromDatabase = async (
   filters: IServiceFilters,
   paginationOptions: IPaginationOptions,
 ): Promise<IGenericResponse<IService[]>> => {
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, areaName, cityName, division, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -59,7 +54,7 @@ const getAllFromDatabase = async (
           $regex: searchTerm,
           $options: 'i',
         },
-      })), 
+      })),
     });
   }
 
@@ -68,6 +63,23 @@ const getAllFromDatabase = async (
       $and: Object.entries(filtersData).map(([field, value]) => ({
         [field]: value,
       })),
+    });
+  }
+
+  if (areaName) {
+    andConditions.push({
+      'location.areaName': areaName,
+    });
+  }
+  
+  if (cityName) {
+    andConditions.push({
+      'location.cityName': cityName,
+    });
+  }
+  if (division) {
+    andConditions.push({
+      'location.division': division,
     });
   }
 

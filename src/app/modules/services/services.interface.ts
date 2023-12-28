@@ -7,8 +7,8 @@ export interface IService {
   category: string;
   subcategory: string;
   price: number;
-  serviceBanner:string;
-  servicesImages?:string[];
+  serviceBanner: string;
+  servicesImages?: string[];
   location: {
     areaName: string[];
     cityName: string;
@@ -22,7 +22,7 @@ export interface IService {
   };
   servicesProvider: Types.ObjectId;
   averageRating?: number;
-  totalRatings:number;
+  totalRatings: number;
   availableTimeSlots: Array<{ date: Date; time: string }>;
   bookedTimeSlots?: Array<{ date: Date; time: string }>;
   duration: number;
@@ -33,7 +33,7 @@ export interface IService {
     label: string;
     children: string;
   }[];
-  isPopular?:boolean;
+  isPopular?: boolean;
 }
 
 export type ServiceModel = Model<IService, Record<string, unknown>>;
@@ -42,4 +42,9 @@ export interface IServiceFilters {
   searchTerm?: string;
   category?: string;
   subcategory?: string;
+  isPopular?: boolean;
+  duration?: number;
+  areaName?: string;
+  cityName?: string;
+  division?: string;
 }

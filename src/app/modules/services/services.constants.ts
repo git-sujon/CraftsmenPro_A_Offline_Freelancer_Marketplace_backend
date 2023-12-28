@@ -4,12 +4,8 @@ export const serviceFilterAbleFields = [
   'subcategory',
   'isPopular',
   'duration',
-  'priceLowToHigh',
-  'priceHighToLow',
-  'ratingLowToHigh',
-  'ratingHighToLow',
   'areaName',
   'cityName',
-  'stateName',
+  'division',
 ];
 export const serviceSearchAbleFields = ['title', 'category'];
